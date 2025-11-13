@@ -148,7 +148,7 @@ jobs:
     steps:
       - name: Run
         id: run
-        uses: paper2/github-actions-opentelemetry@main
+        uses: peter-leonov-ch/github-actions-opentelemetry@main
         env:
           OTEL_SERVICE_NAME: github-actions-opentelemetry
           OTEL_EXPORTER_OTLP_ENDPOINT: https://collector-example.com
@@ -200,7 +200,7 @@ jobs:
     if: always() # Run even if other jobs fail
     steps:
       - name: Send Telemetry
-        uses: paper2/github-actions-opentelemetry@main
+        uses: peter-leonov-ch/github-actions-opentelemetry@main
         env:
           OTEL_SERVICE_NAME: github-actions-opentelemetry
           OTEL_EXPORTER_OTLP_ENDPOINT: https://collector-example.com
