@@ -1,3 +1,18 @@
+
+Update:
+
+```
+npm i
+npm run package
+# to check that build worked:
+node dist/index.js
+git push
+```
+
+Original README below:
+
+---
+
 # GitHub Actions OpenTelemetry
 
 ![CI](https://github.com/actions/typescript-action/actions/workflows/ci.yml/badge.svg)
