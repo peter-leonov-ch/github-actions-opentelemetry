@@ -11,7 +11,6 @@ import {
   WorkflowJobsResponse
 } from './types.js'
 import * as core from '@actions/core'
-import { isTooManyTries, retryAsync } from 'ts-retry'
 import { WorkflowRunEvent } from '@octokit/webhooks-types'
 
 export const createOctokitClient = (): Octokit => {
@@ -32,7 +31,7 @@ export const fetchWorkflowResults = async (
   try {
     // A workflow sometime has not completed in spite of trigger of workflow completed event.
     // FYI: https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#workflow_run
-    const results = await retryAsync(
+    const results = await (
       async () => {
         const workflowRes = await fetchWorkflow(octokit, workflowContext)
         const workflowJobsRes = await fetchWorkflowJobs(
@@ -49,18 +48,11 @@ export const fetchWorkflowResults = async (
           workflow: toWorkflow(workflowRes),
           workflowJobs
         }
-      },
-      {
-        delay: delayMs,
-        maxTry,
-        onError: (err, currentTry) =>
-          console.error(`current try: ${currentTry}`, err)
       }
-    )
+    )()
     return results
   } catch (err) {
     core.error('failed to get results of workflow run')
-    if (isTooManyTries(err)) console.error('retry count exceeded maxTry')
     console.error(err)
     throw err
   }
